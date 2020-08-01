@@ -6,11 +6,11 @@ const { authenticateUser}=require('../middeleware/authentication')
 
 router.post('/register',(req,res)=>{
     let body=req.body
-   if(body.role=='Instructor')
+   if(body.role=='instructor')
     {
        body.level=''
     }
-    if((body.role=='user')&&(body.level==undefined)){
+    if((body.role=='student')&&(body.level==undefined)){
         return res.send({error:'for a user, level is mandatory'})
     }
     let user =new User(body)
@@ -25,7 +25,6 @@ router.post('/login',(req,res)=>{
         return user.generateToken()
     })
     .then((token)=>{
-        console.log(token,'in tt')
         res.send({token})
     })
     .catch((err)=>{

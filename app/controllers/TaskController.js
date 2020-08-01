@@ -2,7 +2,7 @@ const express=require('express')
 const router=express.Router()
 const {Task}=require('../models/Task')
 const {authenticateUser}=require('../middeleware/authentication')
-const { adminAccess } = require('../middeleware/access')
+const { instructorAccess } = require('../middeleware/access')
 const _ =require('lodash')
 
 const multer = require ('multer')
@@ -31,7 +31,7 @@ const upload = multer({
 })
 
 
-router.post('/create',authenticateUser, adminAccess,upload.single('receipt'),(req,res,next)=>{
+router.post('/create',authenticateUser, instructorAccess,upload.single('receipt'),(req,res,next)=>{
     const body=req.body
     if(req.file){
         body.receipt = req.file.path
@@ -80,7 +80,7 @@ router.put("/edit/pic/:id",authenticateUser,upload.single('receipt'),async(req,r
     }   
 })
 
-router.put('/edit/grade/:id',authenticateUser,adminAccess,async(req,res)=>{
+router.put('/edit/grade/:id',authenticateUser,instructorAccess,async(req,res)=>{
     const id=req.params.id
     const body=req.body
     Task.findByIdAndUpdate({_id:id},body,{new:true,runValidators:true})
